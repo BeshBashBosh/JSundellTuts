@@ -10,6 +10,23 @@ enum URLSchemes: String {
 }
 
 // Constructing URLs
+struct NetworkResponse {
+    let request: URL?
+    let mimeType: String
+    let header: [AnyHashable: Any]
+    let statusCode: Int
+    let statusDescription: String
+    
+    init(_ httpResponse: HTTPURLResponse) {
+        request = httpResponse.url
+        mimeType = httpResponse.mimeType ?? ""
+        header = httpResponse.allHeaderFields
+        statusCode = httpResponse.statusCode
+        statusDescription = HTTPURLResponse.localizedString(forStatusCode: statusCode)
+        debugPrint(httpResponse)
+    }
+}
+
 func constructURLComponentsFrom(scheme: URLSchemes, host: String, path: String) -> URLComponents {
     var components = URLComponents()
     components.scheme = scheme.rawValue
@@ -40,14 +57,17 @@ func createDataTaskFrom(_ components: URLComponents, with session: URLSession) -
             return
         }
         
+        let res = NetworkResponse(response as! HTTPURLResponse)
+        debugPrint(res.header)
+        
         let dataAsString = String(data: data!, encoding: .utf8)
         print(dataAsString)
     }
     return task
 }
 
-let task = createDataTaskFrom(urlComponents, with: URLSession())
-task.resume
+let task = createDataTaskFrom(urlComponents, with: URLSession.shared)
+task.resume()
 
 
 
