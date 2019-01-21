@@ -88,4 +88,16 @@ testTypedErrorResult(asError: false) { (result) in
 testTypedErrorResult(asError: true) { (result) in
     process(result)
 }
+
+
+// MARK: - Extending Result to Throw!
+// Very useful in tests and in general reducing boilerplate (e.g. the process functions above)
+extension Result {
+    func resolve() throws -> Value {
+        switch self {
+            case .success(let value): return value
+            case .failure(let error): throw error
+        }
+    }
+}
   
