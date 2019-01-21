@@ -102,6 +102,7 @@ extension Result {
 }
 
 // MARK: - Extending Result for decoding JSON if result value type is data!
+// Very useful in network requests!
 extension Result where Value == Data {
     func decoded<T: Decodable>() throws -> T {
         let decoder = JSONDecoder()
@@ -109,4 +110,5 @@ extension Result where Value == Data {
         return try decoder.decode(T.self, from: data)
     }
 }
+
   
