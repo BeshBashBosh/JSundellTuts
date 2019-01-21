@@ -7,8 +7,8 @@ import Foundation
 import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-enum Result<V> {
-    case success(V)
+enum Result<Value> {
+    case success(Value)
     case failure(Error)
 }
 
